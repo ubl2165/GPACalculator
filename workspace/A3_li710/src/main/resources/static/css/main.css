@@ -1,0 +1,137 @@
+/*
+Name:  Ji Li
+Assignment:  Assignment 3
+Description: Used in all pages in the Grade Calculator application. 
+The general style rules appley the basic web page, and the rules targeting the 
+evaluation form.
+*/
+body {
+	/* background-color: #eeeeee; */
+	
+
+	max-width: 800px;
+	
+	/* center the entire web content */
+	margin: auto;
+    font-family: Arial, Helvetica, Verdana, sans-serif;
+
+}
+
+
+h1,  h3{
+/* 	text-align: center; */
+	color: #006b55;
+	padding: 8px;
+	border-width: 1px 0;
+	border-style: solid none;
+	border-color: #004335;
+	
+}
+
+
+h2 {
+	color: tomato;
+}
+
+.errorHeading{
+	color: red;
+	padding: 8px;
+	border-width: 1px 0;
+	border-style: solid none;
+	border-color: #004335;
+}
+
+
+/* Style entries targeting the errors in the form field */
+.fieldError{
+	color: hotpink;
+}
+
+/* Style rules targeting the error messages */
+.messageError{
+	font-size: 12px;
+	color: hotpink;
+	
+}
+
+/* Style entries targeting link tag
+When setting the style for several link states, there are some order rules:
+a:hover MUST come after a:link and a:visited
+a:active MUST come after a:hover 
+*/
+/* a:link, a:visited {
+  background-color: white;
+  color: black;
+  border: 2px solid green;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a:hover, a:active {
+  background-color: green;
+  color: white;
+} */
+
+
+ul.menu {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #006652;
+}
+
+li.menu {
+	float: left;
+}
+
+li.menu a {
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+
+li.menu a:hover:not(.active) {
+	background-color: #33AA92;
+}
+
+/* show different color for active links color, not applicable for this case */
+.active {
+	background-color: #0080ff;
+}
+
+/* hide the content or list item */
+li.hidden {
+	display: none;
+}
+
+/* make menu item float right */
+li.last {
+	
+	float:right;
+}
+
+li.menu span {
+	display: block;
+	color: chartreuse;
+	text-align: center;
+	padding: 14px 6px;
+	text-decoration: none;
+	font-size: 14px;
+}
+
+.footer {
+	padding: 5px;
+
+	text-align: center;
+	
+	font-size: 0.8em;
+	/* 	outline-style: dashed;
+	outline-color: blue;
+	outline-width: 0.5 px; */
+}
+

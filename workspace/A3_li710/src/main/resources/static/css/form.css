@@ -1,0 +1,280 @@
+/* Target form elements */
+
+.form-style-1 {
+	margin:10px auto;
+	max-width: 400px;
+	padding: 20px 12px 10px 20px;
+
+}
+.form-style-1 li {
+	padding: 0;
+	display: block;
+	list-style: none;
+	margin: 10px 0 0 0;
+}
+.form-style-1 label{
+	margin:0 0 3px 0;
+	padding:0px;
+	display:block;
+	font-weight: bold;
+}
+.form-style-1 input[type=text], 
+.form-style-1 input[type=date],
+.form-style-1 input[type=datetime],
+.form-style-1 input[type=number],
+.form-style-1 input[type=search],
+.form-style-1 input[type=time],
+.form-style-1 input[type=url],
+.form-style-1 input[type=email],
+textarea, 
+select{
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	border:1px solid #BEBEBE;
+	padding: 7px;
+	margin:0px;
+	transition: all 0.30s ease-in-out;
+	-webkit-transition: all 0.30s ease-in-out;
+	-moz-transition: all 0.30s ease-in-out;
+	-ms-transition: all 0.30s ease-in-out;
+	-o-transition: all 0.30s ease-in-out;
+	outline: none;	
+}
+.form-style-1 input[type=text]:focus, 
+.form-style-1 input[type=date]:focus,
+.form-style-1 input[type=datetime]:focus,
+.form-style-1 input[type=number]:focus,
+.form-style-1 input[type=search]:focus,
+.form-style-1 input[type=time]:focus,
+.form-style-1 input[type=url]:focus,
+.form-style-1 input[type=email]:focus,
+.form-style-1 textarea:focus, 
+.form-style-1 select:focus{
+	-moz-box-shadow: 0 0 8px #88D5E9;
+	-webkit-box-shadow: 0 0 8px #88D5E9;
+	box-shadow: 0 0 8px #88D5E9;
+	border: 1px solid #88D5E9;
+}
+.form-style-1 .field-divided{
+	width: 49%;
+}
+
+.form-style-1 .field-long{
+	width: 100%;
+}
+.form-style-1 .field-select{
+	width: 100%;
+}
+.form-style-1 .field-textarea{
+	height: 100px;
+}
+.form-style-1 input[type=submit], .form-style-1 input[type=button]{
+	background: #4B99AD;
+	padding: 8px 15px 8px 15px;
+	border: none;
+	color: #fff;
+}
+.form-style-1 input[type=submit]:hover, .form-style-1 input[type=button]:hover{
+	background: #4691A4;
+	box-shadow:none;
+	-moz-box-shadow:none;
+	-webkit-box-shadow:none;
+}
+.form-style-1 .required{
+	color:red;
+}
+
+
+/* Another Responsive Form Style, form-style-2 */
+
+/* Select all elements inside eval-form elements */
+.form-style-2 * {
+	box-sizing: border-box;
+	margin:0 auto;
+	max-width: 600px;
+}
+
+.form-style-2 input[type=text], [type=date], [type=number], select, textarea {
+	width: 100%;
+	padding: 8px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	resize: vertical;
+}
+
+.form-style-2 label {
+	padding: 12px 12px 12px 0;
+	display: inline-block;
+}
+
+.form-style-2 input[type=submit] {
+	background-color:#33AA92;
+	color: white;
+	padding: 8px 24px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	float: left;
+}
+
+.form-style-2 input[type=submit]:hover {
+	background-color: #006652;
+}
+
+
+.form-style-2 fieldset {
+	border: 1px dashed black;
+	padding: 10px;
+	border-radius: 8px;
+}
+
+.form-style-2 legend {
+	
+	color: green;
+	font-weight: bold;
+	
+	/* center the legend */
+	margin: 0 auto;
+	
+}
+
+.form-style-2 .required{
+	color:red;
+}
+
+/* select input readonly */
+input:read-only {
+  background-color: yellow;
+}
+
+.col-25 {
+	float: left;
+	width: 25%;
+	margin-top: 6px;
+}
+
+.col-20 {
+	float: left;
+	width: 20%;
+	margin-top: 6px;
+}
+
+/* this class width turn to 0, when screen less than 600 px
+	it is used for create a gap between two text input in one line*/
+.col-5 {
+	float: left;
+	width: 5%;
+	margin-top: 6px;
+}
+
+.col-50 {
+	float: left;
+	width: 50%;
+	margin-top: 4px;
+}
+
+.col-75 {
+	float: left;
+	width: 75%;
+	margin-top: 6px;
+}
+
+.explaination {
+	float: right;
+	font-size: 12px;
+	font-weight: bold;	
+}
+
+/* Clear floats after the columns, modern clearfix hack 
+make sure one row in one line only */
+.row::after {
+	content: "";
+	display: table;
+	/*Do not allow floating elements on both side of class row  */
+	clear: both;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, 
+make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+	.col-25, .col-75, .col20, .col50, input[type=submit] {
+		width: 100%;
+		margin-top: 0;
+	}
+
+	/* this class width turn to 0 , it is used for create a gap between 
+	two text input in one line*/
+	.col-5 {
+		width: 0;
+	}
+}
+
+
+/* Login Form Style, form-style-login1 */
+
+.form-style-login1 body {font-family: Arial, Helvetica, sans-serif;}
+.form-style-login1 form {border: 3px solid #f1f1f1;}
+
+.form-style-login1 input[type=text],
+.form-style-login1 input[type=password],
+.form-style-login1 input[type=email] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.form-style-login1 button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.form-style-login1 button:hover {
+  opacity: 0.8;
+}
+
+.form-style-login1 .cancelbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+}
+
+.form-style-login1 .imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+.form-style-login1 img.avatar {
+  width: 30%;
+  border-radius: 35%;
+}
+
+.form-style-login1 .container {
+  padding: 16px;
+}
+
+.form-style-login1 span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+     display: block;
+     float: none;
+  }
+  .cancelbtn {
+     width: 100%;
+  }
+}
+
+

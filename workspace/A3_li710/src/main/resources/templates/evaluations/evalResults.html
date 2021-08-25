@@ -1,0 +1,61 @@
+<!--
+Name:  Ji Li
+Assignment:  A3
+Date:  08/20/2021
+
+This is page to display all the evaluations
+
+File list
+ /index.html -- main landing page.
+ /errors/error-404.html -- 404 error customized page. 
+ /errors/error-500.html -- 500 error customized page.
+ /errors/permissionDenied.html -- access denied page
+ /gpa/gpa-calculator.html -- show gpa result for completed course
+ /courses/add-course.html -- add or edit course page
+ /evaluations/evaluation.html -- A form page add or edit evaluation.
+ /evaluations/evalResults.html --A page to display all the evaluations
+ /evaluations/list.html -- show selected course's evaluations
+ /layouts/forms.html -- A layout template page for forms, for future expansion
+ /layouts/tables.html -- A layout template page for tables, for future expansion
+ /layouts/layouts.html --  A layout template page to model the web page 
+ 	with Thymeleaf. for future expansion.
+ /css/main.css -- Main css file for the whole web application.
+ /css/table.css --  CSS file Targeting the tables.
+ /css/form.css -- CSS file targeting forms.
+ /js/main.js -- JavaScript for the menu display. //discarded
+ /js/sripts.js -- AJAX hovering display
+-->
+
+
+
+<!DOCTYPE html>
+
+<!-- This is a webpage powered by Thymeleaf -->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- Replace the head tag with the head template in layouts.html page-->
+<head th:replace="/layouts/layouts :: headTag"></head>
+
+<body>
+	<!-- insert the title from messages.properties -->
+	<h1 th:text="#{evaluationResults.title}">Results</h1>
+	
+	<!-- Load the navigation menu from menu fragment of layouts.html -->
+	<nav th:replace="/layouts/layouts :: menu(0)"></nav>
+
+	<!-- Message for empty evaluation list -->
+	 <div th:unless="${#lists.size(session.evaluations) > 0}">     	
+    	<h2>No Evaluations Available</h2>    	
+    </div>
+    	
+	<!-- Load the result table from layout if list is not empty-->
+	<div th:if="${#lists.size(session.evaluations) > 0}">	
+		<table th:replace="/layouts/tables :: table1"></table>
+	</div>
+	
+
+	<!-- Load the footer from same fragment of layouts.html -->
+	<footer th:replace="/layouts/layouts :: script-footer"></footer>
+
+</body>
+</html>

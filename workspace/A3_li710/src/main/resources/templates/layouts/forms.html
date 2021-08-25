@@ -1,0 +1,357 @@
+<!--
+Name:  Ji Li
+Assignment:  A1
+Date:  06/18/2021
+
+Page Description: A form layout page contains all the forms, currently only 
+one evaluation form. With Thymeleaf fragments and replace function, the form 
+can be injected into the web page. And it is easy to maintain and update.
+
+File list
+ /index.html -- main landing page.
+ /error/error-404.html -- 404 error customized page. 
+ /error/error-500.html -- 500 error customized page.
+ /gpa/gpa-calculator.html -- show gpa result for completed course
+ /courses/add-course.html -- add or edit course page
+ /evaluations/evaluation.html -- A form page add or edit evaluation.
+ /evaluations/evalResults.html --A page to display all the evaluations
+ /evaluations/list.html -- show selected course's evaluations
+ /layouts/forms.html -- A layout template page for forms, for future expansion
+ /layouts/tables.html -- A layout template page for tables, for future expansion
+ /layouts/layouts.html --  A layout template page to model the web page 
+ 	with Thymeleaf. for future expansion.
+ /css/main.css -- Main css file for the whole web application.
+ /css/table.css --  CSS file Targeting the table
+ /js/main.js -- JavaScript for the menu display.
+-->
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Form Templates</title>
+</head>
+<body>
+
+	<!-- This is template for Evaluation form.
+	and it is defined with the Thymeleaf fragment "eval-form";
+	set class name to 'evalForm' for javascript and css purpose.-->
+	
+	<!-- th:action will make sure post form working, Cross-Site-Request-Forgery: CSRF-->
+	<form method="post" class="form-style-2" th:fragment="form1"
+		th:action="@{/evaluations/addEvaluation}" th:object="${evaluation}">
+
+		<fieldset>
+			<legend th:text="#{form1.legend}">legend</legend>
+
+			<!-- Title -->
+			<div class="row">
+				<div class="col-25">
+					<label for="title">Evaluation Title:</label>
+				</div>
+
+				<!-- pattern="\S+.*\S+" for non blank input and input without
+				leading and trailing space
+				I removed it to check validation artifact
+				-->
+				<div class="col-75">
+					<input type="text" th:field="*{title}" th:errorclass="fieldError">
+				</div>
+			</div>
+
+			<!-- Title error message -->
+			<div class="row" th:if="${#fields.hasErrors('title')}"
+				th:errors="*{title}" th:errorclass="messageError">Error</div>
+
+
+			<!-- Course  Use message property to populate the form unit
+			An alternative way.-->
+			<div class="row" th:with="l2=#{form1.label_2}">
+				<div class="col-25">
+					<label th:for="${l2}" th:text="|${#strings.capitalize(l2)}:|">label_2:</label>
+				</div>
+
+				<div class="col-75">
+					<select th:id="${l2}" class="field-select" th:field="*{course}">
+
+						<!-- If Session is empty, use Model	Attribute -->
+						<option th:unless="${#lists.isEmpty(session.courses)}"
+							th:each="c : ${session.courses}" th:value="${c.code}" value="N/A"
+							th:text="${c.title}">item</option>
+
+						<option th:if="${#lists.isEmpty(session.courses)}"
+							th:each="c : ${courses}" th:value="${c.code}" value="N/A"
+							th:text="${c.title}">item</option>
+					</select>
+				</div>
+			</div>
+
+			<!-- course error message -->
+			<div class="row" th:if="${#fields.hasErrors('course')}"
+				th:errors="*{course}" th:errorclass="messageError">Error</div>
+
+
+			<!-- Grade and Max Row -->
+
+			<!-- Grade -->
+			<div class="row">
+				<div class="col-25">
+					<label for="grade">Mark:</label>
+				</div>
+
+				<!-- pattern="^\d*\.?\d+$" for positive numbers and 0  -->
+				<div class="col-25">
+					<input type="text" th:field="*{grade}" required
+						pattern="^\d*\.?\d+$" th:errorclass="fieldError">
+				</div>
+				
+				<!-- Spacing -->
+				<div class="col-5"></div>
+
+				<!-- Max -->
+				<div class="col-20" id="center">
+					<label for="max">Out Of:</label>
+				</div>
+
+				<!-- pattern="(^\d*\.?\d*[1-9]+\d*$)|(^[1-9]+\d\.?\d*$)" 
+				for number greater than 0 and not 0 -->
+				<div class="col-25">
+					<input type="text" th:field="*{max}" required
+						pattern="(^\d*\.?\d*[1-9]+\d*$)|(^[1-9]+\d*\.?\d*$)"
+						th:errorclass="fieldError">
+				</div>
+			</div>
+
+			<!-- Grade error message -->
+			<div class="row" th:if="${#fields.hasErrors('grade')}"
+				th:errors="*{grade}" th:errorclass="messageError">Error</div>
+
+			<!-- Max error message -->
+			<div class="row" th:if="${#fields.hasErrors('max')}"
+				th:errors="*{max}" th:errorclass="messageError">Error</div>
+
+			<!-- Weight -->
+			<div class="row">
+				<div class="col-25">
+					<label for="weight">Weight:</label>
+				</div>
+
+				<!-- pattern="(^\d*\.?\d*[1-9]+\d*$)|(^[1-9]+\d\.?\d*$)" 
+				for number greater than 0 and not 0 -->
+				<div class="col-75">
+					<input type="text" th:field="*{weight}" required
+						pattern="(^\d*\.?\d*[1-9]+\d*$)|(^[1-9]+\d*\.?\d*$)"
+						th:errorclass="fieldError">
+				</div>
+			</div>
+
+			<!-- Weight error message -->
+			<div class="row" th:if="${#fields.hasErrors('weight')}"
+				th:errors="*{weight}" th:errorclass="messageError">Error</div>
+
+			<!-- DueDate -->
+			<div class="row">
+				<div class="col-25">
+					<label for="dueDate">Due Day:</label>
+				</div>
+				<div class="col-75">
+					<input type="date" th:field="*{dueDate}" required
+						th:errorclass="fieldError">
+				</div>
+			</div>
+
+			<!-- Id, but hidden. Id is auto-increment value in database.
+			If it is not here, system will assign the id to 0 
+			which will pass to @ModelAttribute evaluation. 
+			And the evauation.id became 0, causing edit not working problem, 
+			the da.updateEvaluation() method will update the record with id=0, 
+			which is not exist in data base.-->
+
+			<input type="hidden" th:field="*{id}">
+
+			<!-- Submit Button -->
+			<div class="row">
+				<input th:if="${session.edit}" type="submit" value="UPDATE">
+				<input th:unless="${session.edit}" type="submit" value="ADD">
+			</div>
+		</fieldset>
+	</form>
+
+	<!-- form2 for add course -->
+	<form method="POST" th:action="@{/courses/add-edit-course}" th:object="${course}"
+		class="form-style-2" th:fragment="form2">
+		<fieldset>
+			<legend th:text="#{form2.legend}">legend</legend>
+
+			<!-- code -->
+			<div class="row">
+				<div class="col-25">
+					<label for="code">Course Code <span class="required">*</span>
+					</label>
+				</div>
+				<!-- if session.editCourse is true, that means is editing
+				then the code field is read-only! otherwise will not update
+				the record, because code is primary key-->
+				<div class="col-75">
+					<input type="text" id="code" name="code" class="field-long"
+						placeholder="Pattern: ABCD12345" pattern="[a-zA-Z]{4}\d{5}"
+						th:field="*{code}" required 
+						th:readonly="${session.editCourse}"/>
+				</div>
+			</div>
+			
+			<!-- Title -->
+			<div class="row">
+				<div class="col-25">
+		  		<label for="title">Course Title
+		  			<span class="required">*</span>
+				</label> 
+				</div>
+
+				<div class="col-75">
+				<input type="text" id="title" name="title" class="field-long" 
+				pattern="\S+.*\S+" placeholder="Can't be empty"
+				th:field="*{title}" required/>
+				</div>
+			</div>
+			
+			<!-- Credits -->
+			<div class="row">
+				<!-- Credits -->
+				<div class="col-25">
+		  		<label for="credits">Credits
+		  			<span class="required">*</span>
+				</label> 
+				</div>
+				<div class="col-25">
+				<input type="number" id="credits" name="credits" class="field-long" 
+				 min="1" max="10"
+				th:field="*{credits}" required/>
+				</div>
+				
+				<!--Spacing  -->
+				<div class="col-5"></div>
+				
+				<!-- final grade -->
+				<div class="col-20">
+					<label for="finalGrade">Final Grade</label> 
+				</div>
+				<div class="col-25">
+				<input type="number" id="finalGrade" name="finalGrade" class="field-long" 
+				 min="0" max="100" step="0.1" 
+				th:field="*{finalGrade}" readonly/>
+				</div>
+			</div>
+			
+			<div class="row">
+				<!-- Term -->
+				<div class="col-25">
+					<label for="term">Term</label> 
+				</div>
+				<div class="col-25">
+				<input type="number" id="term" name="term" class="field-long" 
+				 min="1" max="8"
+				th:field="*{term}" />
+				</div>
+				
+				<!--Spacing  -->
+				<div class="col-5"></div>
+				
+				<!-- complete -->
+				<div class="col-20">
+					<label for="complete">Complete</label>
+				</div>
+				<div class="col-25">
+				<input type="radio" id="yes" name="complete"  
+				value="true" 
+				th:field="*{complete}" />
+				<label for="yes">yes</label>
+				<input type="radio" id="no" name="complete"  
+				value="false" checked 
+				th:field="*{complete}" />
+				<label for="no">no</label>
+				</div>
+			</div>
+
+
+			<!-- Submit Button -->
+			<div class="row">
+				<div class="col-25">
+					<input th:if="${session.editCourse}" type="submit" value="UPDATE">
+					<input th:unless="${session.editCourse}" type="submit" value="ADD">
+				</div>
+				<div class="col-75">
+					<label class="explaination">Yellow Field: Read-Only</label>
+				</div>
+			</div>
+
+		</fieldset>
+	</form>
+
+
+	<!-- Log in Form3 -->
+	<form method="post" class="form-style-2" th:fragment="form3"
+		action="/login" th:action="@{/login}">
+
+		<fieldset>
+			<legend th:text="#{form3.legend}">legend</legend>
+
+			<div class="row" th:with="l1=#{form3.label_1}">
+				<div class="col-25">
+					<label th:for="${l1}" th:text="${#strings.capitalize(l1)} + ':'">label_1</label>
+				</div>
+				<div class="col-75">
+					<input type="email" th:id="${l1}" name="username">
+				</div>
+			</div>
+
+			<div class="row" th:with="l2=#{form3.label_2}">
+				<div class="col-25">
+					<label th:for="${l2}" th:text="${#strings.capitalize(l2)} + ':'">label_2</label>
+				</div>
+				<div class="col-75">
+					<input type="password" th:id="${l2}" name="password">
+				</div>
+			</div>
+
+			<!-- Submit Button -->
+			<div class="row">
+				<input type="submit" value="Log In">
+			</div>
+
+		</fieldset>
+	</form>
+
+
+	<!-- login form4  -->
+	<form method="post" class="form-style-login1" th:fragment="form4"
+		action="/login" th:action="@{/login}">
+		<div class="imgcontainer">
+			<img src="/images/cat.jpg" alt="Avatar" class="avatar"
+				th:src="@{/images/cat.jpg}">
+		</div>
+
+		<div class="container"
+			th:with="l1=#{form4.label_1}, l2=#{form4.label_2}">
+			<label th:for="${l1}"><b th:text="${#strings.capitalize(l1)}">Foo</b></label>
+
+			<input type="email" placeholder="Enter Username" th:id="${l1}"
+				th:name="${l1}" required> <label th:for="${l2}"><b
+				th:text="${#strings.capitalize(l2)}">Bar</b></label> <input type="password"
+				placeholder="Enter Password" th:id="${l2}" th:name="${l2}" required>
+
+			<button type="submit" value="log in">Login</button>
+			<label> <input type="checkbox" checked="checked"
+				name="remember"> Remember me
+			</label>
+		</div>
+
+		<div class="container" style="background-color: #f1f1f1">
+			<button type="button" class="cancelbtn" onclick="history.back()">Cancel</button>
+			<span class="psw">Forgot <a href="#">password?</a></span>
+		</div>
+	</form>
+
+</body>
+</html>

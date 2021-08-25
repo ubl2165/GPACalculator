@@ -1,0 +1,126 @@
+/* Target the main <talbe> element 
+box-shadow to add a subtle transparent shadow around the table
+border-collapse to ensure there is no space between the cell borders
+*/
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px auto;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Styling the header
+The <thead> tag is used to group header content in an HTML table.
+
+The <thead> element is used in conjunction with the <tbody> and <tfoot> elements
+ to specify each part of a table (header, body, footer).
+Browsers can use these elements to enable scrolling of the table body 
+independently of the header and footer. Also, when printing a large table that 
+spans multiple pages, these elements can enable the table header and footer to 
+be printed at the top and bottom of each page.
+
+Note: The <thead> element must have one or more <tr> tags inside.
+
+ */
+.styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+
+.title {
+	/* align-content: center; */
+	text-align: center;
+	font-size: 18px;
+	color: #009879;
+	background-color: white;
+}
+
+/* Styling the table cells including th and td */
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+
+/* 
+The following 3 styles are for rows
+
+Add a bottom border to each row for separation
+Add a lighter background to every second row to help readability
+Add a dark border to the very last row to signify the end of the table
+ */
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+/*make the active row look different  */
+
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+
+/* Hoverable table row */
+/* tr:hover {
+	background-color:#34E8F6;
+}
+ */
+ 
+ /* Tool tip text  */
+ .tooltip {
+  position: relative;
+  display: inline-block;
+  /* border-bottom: 1px dotted black; */
+  cursor: pointer;
+
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: max-content;
+  background-color: rgb(0, 128, 255);
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 5px 10px;
+  position: absolute;
+  z-index: 1;
+  top: -5px;
+  left: 110%;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  /* Change location of the arrow vertically */
+  top: 35%;
+  right: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent rgb(0, 128, 255) transparent transparent;
+}
+
+.tooltip:hover{
+  color:dodgerblue;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+
+
+
+
+
