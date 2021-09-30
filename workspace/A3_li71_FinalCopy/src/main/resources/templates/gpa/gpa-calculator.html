@@ -1,0 +1,73 @@
+<!--
+Name:  Ji Li
+Assignment:  A3
+Date:  08/20/2021
+
+Description: A web application to calculate GPA grade.
+1. When the user clicks the GPA calculator on the main index page, calculate 
+and display the cumulative GPA for all courses that have final grades 
+(assume that a course object/record with "complete" as false is a course that 
+has not been completed and therefore does not have a final grade).
+also show a table with the term GPAs (a course that is marked as "complete" will 
+have the term field set to the term# when it was completed and assigned 
+a final grade - for example, a student might not necessarily take syst10199 
+in term 2 even though it's a term 2 course, they might take it in term 3, 
+so its final grade would affect the term 3 GPA). Another option could be to 
+use a form for the user to select whether they want to see the cumulative GPA, 
+or a term GPA (for all terms, or perhaps they could select a specific term?) 
+Read the Course bean documentation inside the Course class for hints
+
+File list
+ /index.html -- main landing page.
+ /errors/error-404.html -- 404 error customized page. 
+ /errors/error-500.html -- 500 error customized page.
+ /errors/permissionDenied.html -- access denied page
+ /gpa/gpa-calculator.html -- show gpa result for completed course
+ /courses/add-course.html -- add or edit course page
+ /evaluations/evaluation.html -- A form page add or edit evaluation.
+ /evaluations/evalResults.html --A page to display all the evaluations
+ /evaluations/list.html -- show selected course's evaluations
+ /layouts/forms.html -- A layout template page for forms, for future expansion
+ /layouts/tables.html -- A layout template page for tables, for future expansion
+ /layouts/layouts.html --  A layout template page to model the web page 
+ 	with Thymeleaf. for future expansion.
+ /css/main.css -- Main css file for the whole web application.
+ /css/table.css --  CSS file Targeting the tables.
+ /css/form.css -- CSS file targeting forms.
+ /js/main.js -- JavaScript for the menu display. //discarded
+ /js/sripts.js -- AJAX hovering display
+-->
+
+
+
+
+<!DOCTYPE html>
+
+<!-- This is a webpage powered by Thymeleaf -->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- Replace the head tag with the head template in layouts.html page-->
+<head th:replace="/layouts/layouts :: headTag"></head>
+
+<body>
+	<!-- insert the title from messages.properties -->
+	<h1 th:text="#{gpa.title}"></h1>
+
+
+	<!-- Load the navigation menu from menu fragment of layouts.html -->  	
+  	<nav th:replace="/layouts/layouts :: menu(3)"></nav>
+  	
+ 	<!-- Message for empty completed list -->
+	 <div th:unless="${#lists.size(session.completedCourses) > 0}">     	
+    	<h2>No Completed Courses Available</h2>    	
+    </div>
+    
+		<!-- Load the completed table from layout if list is not empty-->
+		<div class="row" th:if="${#lists.size(session.completedCourses) > 0}">
+			<table th:replace="/layouts/tables :: table3"></table>
+		</div>
+
+<!-- Load the footer part from same fragment of layouts.html -->
+	<footer th:replace="/layouts/layouts :: script-footer"></footer>
+</body>
+</html>

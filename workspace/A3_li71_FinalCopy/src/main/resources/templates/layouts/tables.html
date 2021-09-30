@@ -1,0 +1,228 @@
+<!--
+Name:  Ji Li
+Assignment:  A1
+Date:  06/18/2021
+
+Page Description: This is a layout template to model all the tables in 
+the web application pages with the Thymeleaf fragments and replace function.
+One of the biggest benefits is that whenever there is a modification I only 
+need to make change at layout.html instead going through all the web pages. 
+Other Files: 
+ /index.html -- main landing page.
+ /error/error-404.html -- 404 error customized page. 
+ /error/error-500.html -- 500 error customized page.
+ /gpa/gpa-calculator.html -- show gpa result for completed course
+ /courses/add-course.html -- add or edit course page
+ /evaluations/evaluation.html -- A form page add or edit evaluation.
+ /evaluations/evalResults.html --A page to display all the evaluations
+ /evaluations/list.html -- show selected course's evaluations
+ /layouts/forms.html -- A layout template page for forms, for future expansion
+ /layouts/tables.html -- A layout template page for tables, for future expansion
+ /layouts/layouts.html --  A layout template page to model the web page 
+ 	with Thymeleaf. for future expansion.
+ /css/main.css -- Main css file for the whole web application.
+ /css/table.css --  CSS file Targeting the table
+ /js/main.js -- JavaScript for the menu display.
+-->
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Table Templates</title>
+</head>
+<body>
+
+	<!-- This is table template for evaluation result list."-->
+	<table 	class="styled-table" th:fragment="table1">
+	    <thead>
+	        <tr>
+	            <th colspan="6" class="title" th:text="#{table1.title}">Results</th>	    		
+	        </tr>
+	        <tr>
+	            <th th:text="#{table1.column1}">1</th>
+	            <th th:text="#{table1.column2}">2</th>
+	            <th th:text="#{table1.column3}">3</th>
+	            <th th:text="#{table1.column4}">4</th>
+	            <th th:text="#{table1.column5}">5</th>
+	            <th th:text="#{table1.column6}">6</th>
+	            
+	        </tr>
+	    </thead>
+	    <tbody>
+	        <tr th:each="e,status : ${session.evaluations}">
+	            <td th:text="${e.dueDate}">N/A</td>
+	            
+	          	<!-- show course with title instead of code-->
+	            <!-- <td th:text="${session.courseMap[e.course]}">N/A</td> -->
+	            
+	          	<!-- show course with code instead of title-->
+	          	 <!-- Course title replaced with a fragment -->
+			    <td th:replace=" :: courseInfo(${session.courseObjectMap[e.course]},${status})">N/A</td>
+
+	            <td th:text="${e.title}">N/A</td>
+	            
+	            <!-- grade / max -->
+	            <td th:text="|${#numbers.formatDecimal(e.grade,1,1)} / ${#numbers.formatDecimal(e.max,1,1)}|">N/A</td>
+	            
+	            <!-- weight  -->
+	            <td th:text="${#numbers.formatDecimal(e.weight,1,0)}">N/A</td>
+	            
+	            <!-- Add Edit Column -->
+	            <td><a href="#" th:href="|@{/evaluations/edit/}${e.id}|">Edit</a></td>	            
+	        </tr>
+	    </tbody>
+	</table>
+
+	<!-- This is table template for all courses list."-->
+	<table class="styled-table" th:fragment="table2">
+		<thead>
+			<tr>
+				<th colspan="5" class="title" th:text="#{table2.title}">Results</th>
+			</tr>
+			<tr>
+				<th th:text="#{table2.column1}">1</th>
+<!-- 				<th th:text="#{table2.column2}">2</th>
+				<th th:text="#{table2.column3}">3</th> -->
+				<th th:text="#{table2.column4}">4</th>
+				<th th:text="#{table2.column5}">5</th>
+				<th th:text="#{table2.column6}">6</th>
+				<th th:text="#{table2.column7}">7</th>
+
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="c,status : ${session.courses}">
+				
+				<!-- This is the cell with a pop up tool-tip when mouse over  -->
+				<td th:fragment="courseInfo(c,status)">
+					<div class="tooltip" th:id="|${c.code}${status.index}|" 
+					th:inline="text">
+						[[${c.code}]]
+						<div class="tooltiptext" th:id="|T${c.code}${status.index}|" >Log in First</div>
+					</div>
+				</td>
+<!-- 				<td th:text="${c.title}">N/A</td>
+				<td th:text="${#numbers.formatDecimal(c.credits,1,0)}">N/A</td> -->
+				
+				<!-- Like java conditional expression, to replace text
+				true to yes, false to no
+				 -->
+				<td th:text="${c.complete}? 'YES' : 'NO'">N/A</td>
+				<td th:text="${c.term}">N/A</td>
+				<td th:text="${c.finalGrade}">N/A</td>
+				<td><a href="#" th:href="|@{/courses/edit-course/}${c.code}|">Edit</a></td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<!-- This is table template for completed courses list."-->
+	<table class="styled-table" th:fragment="table3">
+		<thead>
+			<tr>
+				<th colspan="5" class="title" th:text="#{table3.title}">Results</th>
+			</tr>
+			<tr>
+				<th th:text="#{table3.column1}">1</th>
+				<th th:text="#{table3.column2}">2</th>
+				<!-- <th th:text="#{table3.column3}">3</th> -->
+				<th th:text="#{table3.column4}">4</th>
+				<th th:text="#{table3.column5}">5</th>
+				<th th:text="#{table3.column6}">6</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="cc,status : ${session.completedCourses}">
+				<td th:text="${cc.term}">N/A</td>
+				
+				<!-- Replaced with a fragment -->
+				<td th:replace=" :: courseInfo(${cc}, ${status})">N/A</td>
+				
+				<!-- <td th:text="${#numbers.formatDecimal(cc.credits,1,0)}">N/A</td> -->
+				<td th:text="${cc.finalGrade}">N/A</td>				
+				<!-- Calculated GPA -->
+				<td th:text="${cc.gradePoints}">GPA</td>
+								
+				<td>
+					<div><a href="#" th:href="|@{/courses/show/}${cc.code}|">Show</a></div>
+<!-- 					<div th:unless="${session.show}"><a href="#" th:href="|@{/courses/show/}${cc.code}|">Show</a></div> -->
+<!-- 					<div th:if="${session.show}"><a href="#" th:href="@{/courses/hide}">Hide</a></div> -->
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	
+<!-- This is table template for all evaluations of selected course."-->
+	<table 	class="styled-table" th:fragment="table4">
+	    <thead>
+	        <tr>
+	            <th colspan="6" class="title" th:text="|${session.selectedCourse.code} -- #{table4.title}|">Results</th>	    		
+	        </tr>
+	        <tr>
+	            <th th:text="#{table4.column1}">1</th>
+	            <th th:text="#{table4.column2}">2</th>
+	            <th th:text="#{table4.column3}">3</th>
+	            <th th:text="#{table4.column4}">4</th>
+	            <th th:text="#{table4.column5}">5</th>
+	            <th th:text="#{table4.column6}">6</th>
+	            
+	        </tr>
+	    </thead>
+	    <tbody>
+	        <tr th:each="e,status : ${session.sEvaluations}">
+	            <td th:text="${e.dueDate}">N/A</td>
+	            
+	          	<!-- show course with title instead of code-->
+	            <!-- <td th:text="${session.courseMap[e.course]}">N/A</td> -->
+	            
+				<!-- show course with code instead of title-->
+	          	 <!-- Course title replaced with a fragment -->
+			    <td th:replace=" :: courseInfo(${session.courseObjectMap[e.course]},${status})">N/A</td>
+	            
+	            <td th:text="${e.title}">N/A</td>
+	            
+	            <!-- grade / max -->
+	            <td th:text="|${#numbers.formatDecimal(e.grade,1,1)} / ${#numbers.formatDecimal(e.max,1,1)}|">N/A</td>
+	            
+	            <!-- weight  -->
+	            <td th:text="${#numbers.formatDecimal(e.weight,1,0)}">N/A</td>
+	            
+	            <!-- Add Edit Column -->
+	            <td><a href="#" th:href="|@{/evaluations/edit/}${e.id}|">Edit</a></td>	            
+	        </tr>
+	    </tbody>
+	</table>
+	
+	<!-- This is table template for all incomplete courses."-->
+	<table class="styled-table" th:fragment="table5">
+		<thead>
+			<tr>
+				<th colspan="3" class="title" th:text="#{table5.title}">Results</th>
+			</tr>
+			<tr>
+				<th th:text="#{table5.column1}">1</th>
+				<!-- <th th:text="#{table5.column2}">2</th> -->
+				<th th:text="#{table5.column3}">3</th>
+				<th th:text="#{table5.column4}">4</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="ic,status : ${session.incompleteCourses}">
+				
+				<!-- Replace with a fragment -->
+			   <td th:replace=" :: courseInfo(${ic}, ${status})">N/A</td>
+				
+				<td th:text="${#numbers.formatDecimal(session.numberOfEvaluationsMap[ic.code],1,0)}">N/A</td>
+				
+				<td>
+					<div><a href="#" th:href="|@{/courses/show/}${ic.code}|">Show</a></div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+
+
+</body>
+</html>

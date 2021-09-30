@@ -1,0 +1,160 @@
+<!--
+Name:  Ji Li
+Assignment:  2
+Date:  07/31/2021
+
+Page Description: This is a layout template to model all the repeated code in 
+the web application pages with the Thymeleaf fragments and replace function.
+One of the biggest benefits is that whenever there is a modification I only 
+need to make change at layout.html instead going through all the web pages. 
+Other Files: 
+ /index.html -- main landing page.
+ /error/error-404.html -- 404 error customized page. 
+ /error/error-500.html -- 500 error customized page.
+ /gpa/gpa-calculator.html -- show gpa result for completed course
+ /courses/add-course.html -- add or edit course page
+ /evaluations/evaluation.html -- A form page add or edit evaluation.
+ /evaluations/evalResults.html --A page to display all the evaluations
+ /evaluations/list.html -- show selected course's evaluations
+ /layouts/forms.html -- A layout template page for forms, for future expansion
+ /layouts/tables.html -- A layout template page for tables, for future expansion
+ /layouts/layouts.html --  A layout template page to model the web page 
+ 	with Thymeleaf. for future expansion.
+ /css/main.css -- Main css file for the whole web application.
+ /css/table.css --  CSS file Targeting the table
+ /js/main.js -- JavaScript for the menu display.
+-->
+
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- Define the head fragment for the whole head tag-->
+<head th:fragment="headTag">
+
+<!-- Required meta tags -->
+<meta charset="ISO-8859-1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Read the title defined in the messages.properties as default value -->
+<title th:text="#{title}">FooBar</title>
+
+<!-- CSS style sheet linkage with thymeleaf fail back up address-->
+<link rel="stylesheet" href="/css/main.css" th:href="@{/css/main.css}">
+	
+<link rel="stylesheet" href="/css/table.css"
+	th:href="@{/css/table.css}">
+	
+<link rel="stylesheet" href="/css/form.css"
+	th:href="@{/css/form.css}">
+
+<!-- Script For mouse over AJAX-->
+<script src="/js/scripts.js" th:src="@{/js/scripts.js}"></script>
+</head>
+
+
+<body>
+
+	<!-- Define the Thymeleaf fragment "menu" as navigation menu
+	set id to 'navi' for javascript purpose.-->
+	<nav id="navi" th:fragment="menu(hide)">
+
+		<ul class="menu">
+
+			<!-- Assign ids for Main Menu for Javascript use. -->
+			
+			<!-- Add or change menu items here -->
+			<li th:unless="${hide==1}" th:id="#{menu.item1}" class="menu"><a href="/" th:href="@{/}" th:text="#{menu.item1}">Item 1</a></li>
+			<li th:unless="${hide==2}" th:id="#{menu.item2}" class="menu"><a href="/evaluations/evaluation" th:href="@{/evaluations}" th:text="#{menu.item2}">Item 2</a></li>
+			<li th:unless="${hide==3}" th:id="#{menu.item3}" class="menu"><a href="/gpa/gpa-calculator.html" th:href="@{/gpa}" th:text="#{menu.item3}">Item 3</a></li>
+			<li th:unless="${hide==4}" th:id="#{menu.item4}" class="menu"><a href="/courses/add-course.html" th:href="@{/courses}" th:text="#{menu.item4}">Item 4</a></li>
+			
+			
+			
+			<!-- Last Item will be logout if authenticated  -->
+			<li sec:authorize="isAuthenticated()" th:unless="${hide==5}" 
+			th:id="#{menu.item5}" class="menu last"><a href="/logout" 
+			th:href="@{/logout}" th:text="#{menu.item5}">Item 5</a></li>
+			
+			<!-- Last Item will be login if not authenticated  -->
+			<li sec:authorize="!isAuthenticated()" th:unless="${hide==5}" 
+			th:id="#{menu.item6}" class="menu last"><a href="/login" 
+			th:href="@{/login}" th:text="#{menu.item6}">Item 6</a></li>
+			
+			<li sec:authorize="isAuthenticated()"  
+			 class="menu last" ><span sec:authentication="name"> </span></li>
+
+<!-- 			<li th:id="#{menu.item5}" class="menu"><a href="#" th:href="@{/sessionOut}" th:text="#{menu.item5}">Item 5</a></li> -->
+		</ul>
+		
+
+		<br>
+	</nav>
+
+
+	<!-- This is template for Evaluation result section without table format 
+	and it is defined with  the Thymeleaf fragment "result".
+	it is not used in this assignment, but for future expansion or testing-->
+	<div class="result" th:fragment="result">
+		<p>
+		  <b>Evaluation:</b> 
+		  
+		  <!-- anEvaluation is the key that holds an Evaluation object created 
+		  in the controller class and added to Model as attribute -->
+		  <span th:text="${anEvaluation.title}">
+		    You were not supposed to see this.
+		  </span> 
+		  <b>Due:</b>
+		  <span th:text="${anEvaluation.dueDate}">
+		  	You were not supposed to see this.
+		  </span>
+		</p>
+		
+		<p>
+		  <b>Grade:</b> 
+		  
+		  <!-- Thymeleaf utility method to format decimal number to 1 place -->
+		  <span th:text="${#numbers.formatDecimal(anEvaluation.grade,1,1)} + 
+		    '/' + ${#numbers.formatDecimal(anEvaluation.max,1,1)}">
+		  	You were not supposed to see this.
+		  </span>
+		</p>
+		
+		<p>
+		  <b>Earned Weight:</b> 
+		  
+		  <!-- Thymeleaf utility method to format decimal number to 1 place -->
+		  <span th:text="${#numbers.formatDecimal(anEvaluation.weight,1,1)}">
+		  	You were not supposed to see this.
+		  </span>
+		</p>
+	</div>
+	
+	
+	<!-- Define the Thymeleaf fragment "script-footer", 
+	incluiding Javascript section and footer-->
+	<footer th:fragment="script-footer">
+		<div class="footer">
+		
+			<!-- Show page title with Javascript-->
+			<p id="demoPage"></p>
+			
+			<hr>
+			
+			<!-- th:utext is good for displaying html tags -->
+			<!-- author and title are defined in messages.properties -->
+			<p th:utext="#{author} + ' ' + '----' + ' ' + #{title} ">©2021 Ji Li</p>
+
+		</div>
+		
+		<!-- Suspend this hide own menu item script, the function has been replaced by 
+		Thymeleaf fragment parameters -->
+		<!-- <script src="/js/main.js" th:src="@{/js/main.js}"></script> -->
+		
+
+	</footer>
+
+</body>
+</html>

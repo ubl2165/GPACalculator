@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!-- This is a web page powered by Thymeleaf -->
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- Replace the head tag with the head template in layouts.html page-->
+<head th:replace="/layouts/layouts :: headTag"></head>
+
+
+<body>
+
+	<!-- <!-- insert the title from messages.properties -->
+	<h1 >Search Result</h1>
+
+	
+<!-- 	<div sec:authorize="isAuthenticated()">
+	<span sec:authentication="name"></span> is in as 
+	<span sec:authentication="principal.authorities"></span></div> -->
+	<div th:unless="${#lists.isEmpty(courses)}">
+
+		<table>
+			<thead>
+				<tr>
+					<th>code</th>
+					<th>title</th>
+					<th>credits</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="c : ${courses}">
+				
+					<!-- click the name will show info -->
+					<td th:text="${c.code}">name</td>
+					<td th:text="${c.title}">title</td>
+					<td th:text="${c.credits}">title</td>
+
+				</tr>
+			</tbody>
+
+
+		</table>
+	</div>
+
+	<!-- Load the navigation menu from menu fragment of layouts.html -->
+	<nav th:replace="/layouts/layouts :: menu(0)"></nav>
+
+	<!-- Search Bar -->
+<!-- 	<div th:replace="/layouts/forms :: search">	</div> -->
+	
+	<!-- Load the incomplete table from layout if list is not empty	
+	-->
+<!-- 	<div class="row" th:if="${#lists.size(session.incompleteCourses) > 0}">
+		<table th:replace="/layouts/tables :: table5"></table>
+	</div> -->
+
+	<!-- Load the footer part from same fragment of layouts.html -->
+	<footer th:replace="/layouts/layouts :: script-footer"></footer>
+</body>
+
+</html>
